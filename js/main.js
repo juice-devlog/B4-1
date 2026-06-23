@@ -54,7 +54,6 @@ const observer = new IntersectionObserver((entries) => { // 요소가 화면에 
   entries.forEach(entry => {
     if (entry.isIntersecting) { // 요소가 화면 안에 들어왔으면
       entry.target.classList.add('visible'); // CSS의 hidden → visible 전환
-      observer.unobserve(entry.target); // 한 번만 실행
     }
   });
 }, { threshold: 0.2 }); // Intersection Observer 임계값 0.2 기준으로 감지된 것으로 봄
@@ -82,11 +81,10 @@ const renderProjects = async () => { // async: 함수 안에서 await 사용 가
     }
 
     // 성공 상태
-    const cards = repos.map(({ name, description, stargazers_count, language, html_url }) => `
+    const cards = repos.map(({ name, language, html_url }) => `
       <article class="project-card">
         <h3>${name}</h3>
-        <p>${description ?? '설명 없음'}</p>
-        <p>⭐ ${stargazers_count} &nbsp; 🔤 ${language ?? 'N/A'}</p>
+        <p>${language}</p>
         <a href="${html_url}" target="_blank" rel="noopener" class="btn btn-primary">GitHub →</a>
       </article>
     `).join('');
@@ -109,10 +107,10 @@ renderProjects();
 const form = document.getElementById('contact-form');
 
 const showError = (id, msg) => {
-  document.getElementById(id).textContent = msg;
+  document.getElementById(id).innerHTML = msg;
 };
 const clearError = (id) => {
-  document.getElementById(id).textContent = '';
+  document.getElementById(id).innerHTML = '';
 };
 
 form.addEventListener('submit', (e) => { // 폼 전송 버튼 클릭 시 실행
@@ -140,6 +138,6 @@ form.addEventListener('submit', (e) => { // 폼 전송 버튼 클릭 시 실행
     form.reset(); // 폼 입력값 전체 초기화
     const success = document.getElementById('form-success');
     success.classList.remove('hidden');
-    setTimeout(() => success.classList.add('hidden'), 3000);
+    //setTimeout(() => success.classList.add('hidden'), 3000);
   }
 });
